@@ -3,22 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>board</title>
 </head>
 <body>
     <canvas id="canvas"></canvas>
     <script>
         let canva = document.getElementById("canvas");
-        let painting = false;
-        let last=[0,0];
+        canva.width=document.documentElement.clientWidth;
+        canva.height=document.documentElement.clientHeight;
         var ctx = canva.getContext("2d"); //创建画笔
         ctx.strokeStyle = "red";
         ctx.lineWidth = 15;
         ctx.lineCap="round";
-        canva.width=document.documentElement.clientWidth;
-        canva.height=document.documentElement.clientHeight;
-        console.log(canva.width,canva.height);
-        drawline=canva.drawline;
+        let painting = false;
+        let last=[0,0];
         
         var isTouchDevice = 'ontouchstart' in document.documentElement;
 
@@ -36,10 +34,8 @@
                 if(painting === true)
                 {
                     console.log("touchmove");
-                    ctx.moveTo(last[0],last[1]);
-                    ctx.lineTo(e.touches[0].clientX,e.touches[0].clientY);
-                    ctx.stroke();
-                    last=[e.clientX,e.clientY]
+                    drawLine(last[0],last[1],e.touches[0].clientX,e.touches[0].clientY);
+                    last=[e.touches[0].clientX,e.touches[0].clientY];
                 }
             }
 
@@ -61,9 +57,7 @@
                 if(painting === true)
                 {
                     console.log("move");
-                    ctx.moveTo(last[0],last[1]);
-                    ctx.lineTo(e.clientX,e.clientY);
-                    ctx.stroke();
+                    drawLine(last[0],last[1],e.clientX,e.clientY);
                     last=[e.clientX,e.clientY]
                 }
             }
@@ -73,7 +67,15 @@
                 console.log("up");
             }
                 
-        }
+        }                   
+        
+        function drawLine(x1,y1,x2,y2){
+                        ctx.beginPath();
+                        ctx.moveTo(x1,y1);
+                        ctx.lineTo(x2,y2)
+                        ctx.stroke();
+                    }
     </script>
+    
 </body>
 </html>
